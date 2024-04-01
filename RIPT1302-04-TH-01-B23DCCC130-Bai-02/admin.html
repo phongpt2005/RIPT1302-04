@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Management</title>
+    <style>
+        
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+        }
+        .container {
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #fff;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 8px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        form {
+            margin-top: 20px;
+        }
+        input[type="text"],
+        input[type="number"] {
+            width: calc(100% - 16px);
+            padding: 8px;
+            margin: 4px 0;
+            display: inline-block;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        input[type="submit"],
+        button {
+            padding: 8px 16px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        input[type="submit"]:hover,
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Student Management</h2>
+        <table>
+            <tr>
+                <th>STT</th>
+                <th>Name</th>
+                <th>Age</th>
+                <th>Address</th>
+                <th>Phone</th>
+                <th>Email</th>
+                <th>Class</th>
+                <th>Action</th>
+            </tr>
+           
+        </table>
+        <form id="addStudentForm">
+            <input type="text" id="name" name="name" placeholder="Name" required>
+            <input type="number" id="age" name="age" placeholder="Age" required>
+            <input type="text" id="address" name="address" placeholder="Address" required>
+            <input type="text" id="phone" name="phone" placeholder="Phone" required>
+            <input type="email" id="email" name="email" placeholder="Email" required>
+            <input type="text" id="class" name="class" placeholder="Class" required>
+            <input type="submit" value="Add Student">
+        </form>
+    </div>
+
+    <script>
+        
+        var students = [];
+
+        
+        function addStudentToTable(student) {
+            var table = document.querySelector("table");
+            var newRow = table.insertRow(-1);
+            var cells = Object.values(student);
+            cells.forEach(function(cellData) {
+                var newCell = newRow.insertCell();
+                var newText = document.createTextNode(cellData);
+                newCell.appendChild(newText);
+            });
+            var actionCell = newRow.insertCell();
+            var editButton = document.createElement("button");
+            editButton.textContent = "Edit";
+            editButton.addEventListener("click", function() {
+              
+                console.log("Edit button clicked for student: ", student);
+            });
+            var deleteButton = document.createElement("button");
+            deleteButton.textContent = "Delete";
+            deleteButton.addEventListener("click", function() {
+                var rowIndex = this.parentNode.parentNode.rowIndex;
+                table.deleteRow(rowIndex);
+                students.splice(rowIndex - 1, 1);
+            });
+            actionCell.appendChild(editButton);
+            actionCell.appendChild(deleteButton);
+        }
+
+        document.getElementById("addStudentForm").addEventListener("submit", function(event) {
+            event.preventDefault();
+            var name = document.getElementById("name").value;
+            var age = document.getElementById("age").value;
+            var address = document.getElementById("address").value;
+            var phone = document.getElementById("phone").value;
+            var email = document.getElementById("email").value;
+            var classInfo = document.getElementById("class").value;
+            var student = {
+                Name: name,
+                Age: age,
+                Address: address,
+                Phone: phone,
+                Email: email,
+                Class: classInfo
+            };
+            students.push(student);
+            addStudentToTable(student);
+
+            this.reset();
+        });
+    </script>
+</body>
+</html>
